@@ -14,27 +14,21 @@
   </div>
 
   {{ if .Site.Params.showPostsOnHomepage }}
-
+  <h2>Recent Posts</h2>
+  <main>
     {{ $pages := where .Site.RegularPages "Type" "posts" }}
     {{ $sorted := ($pages.ByParam "date").Reverse }}
     {{ if .Site.Params.sortPostsByDateOldestFirst }}
       {{ $sorted = $pages.ByParam "date" }}
     {{ end }}
 
-    {{ $paginator := .Paginate $sorted }}
-
-    {{ if .Site.Params.usePaginationOnHomepage }}
-      {{ range $paginator.Pages }}
-        {{ .Render "summary" }}
-      {{ end }}
-      {{ partial "paginator" . }}
-    {{ else }}
-      {{ $limit := .Site.Params.limitPostsOnHomepage | default 3 }}
-      {{ range first $limit $sorted}}
-        {{ .Render "summary" }}
-      {{ end }}
-      <a class="view-more" href="/posts">More Posts</a>
+    {{ $limit := .Site.Params.limitPostsOnHomepage | default 3 }}
+    {{ range first $limit $sorted}}
+      {{ .Render "reduced_summary" }}
     {{ end }}
+  </main>
+
+    more stuff at the <a class="view-more" href="/posts">archives</a>.
   {{ end }}
 
 {{ end }}
